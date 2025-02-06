@@ -1,79 +1,62 @@
-//package simpleCalc;
 import java.util.Scanner;
 
-class app {
-
-    public static void main(String[] args ){
-         
-        //scanner 
+class app3 {
+  public static void main(String[] args) {
+        // scanner object
         Scanner scanner = new Scanner(System.in);
-        boolean needToRepeat = true;
+
+
+        //?prompting user to enter first number
+        System.out.print("Enter first Number: ");
+        // storage of entered first number
+        String num1 = scanner.next();
+        // if_valid_num value will be true if num1 is valid number and false is nu is not valid number
+        boolean if_valid_num = validNum(num1);
         
-        while (needToRepeat) {
-            needToRepeat = performTask();
-            boolean need_to_repeat_num1 = true; 
-            
-            //..........................................................................
-            while (need_to_repeat_num1) { 
-                System.out.println("""
-                Welcome to our simple calculator: 
-                \n
-                Enter your first number:                
-            """);
+        // if inputed number on first trial is valid 
+        if (if_valid_num == true) {
+            //converting num1 from STRING to DOUBLE
+            double num1_double = Double.parseDouble(num1);
+            second_Number_input(num1_double);
+        } 
 
-                //? first value==============================
-                String num1 = scanner.nextLine();
-                boolean validNum1 = validNum(num1);
-                if (validNum1 == true) {
-                    need_to_repeat_num1 = false;
-                    break;
-                } else {
-                    System.out.println("Please Enter valid number:  ");
-                }
-            }
-            
-            System.out.println("Enter your second number: ");
-            //? second value==============================
-            String num2 = scanner.nextLine();
-            boolean validNum2 = validNum(num1);
-            
-            // option for what to do to values
-            System.out.printf("""
-                What do you want to do to  %num1  and  %num2, enter option 1-4 :
-                1. *
-                1. -
-                3. / 
-                4. + 
-                """ , num1, num2);
+        // if inputed number on first trial is not  valid 
+        else {
+            valid_num1();
+        }
 
-            String action = scanner.nextLine();
-            boolean valid_option_number = validNum(action);
+        scanner.close();
+    }
 
+    //? starts executing when number one is valid
+    static void second_Number_input(double num1_double) {
 
-            if(valid_option_number == true){
-                int action_in_number_format = Integer.parseInt(action);
-                double num1_in_number_format = Double.parseDouble(num1);
-                double num2_in_number_format = Double.parseDouble(num2);
+        Scanner scanner = new Scanner(System.in);
+        //prompting user to enter second number
+        System.out.print("Enter second Number: ");
+        // storage of entered second number
+        String num2 = scanner.next();
 
-                whatToDo(valid_option_number, action_in_number_format, num1_in_number_format, num2_in_number_format);
-            }
-            else{
-              
-            }
-            
+        //validating second number
+        boolean if_valid_num2 = validNum(num2);
 
-            
-            
+        // if inputed number on first trial is valid 
+        if (if_valid_num2 == true) {
+            //converting num1 from STRING to DOUBLE
+            double num2_double = Double.parseDouble(num2);
+            calculation_options(num1_double, num2_double);
+        } 
+
+        // if inputed number on first trial is not  valid 
+        else {
+            valid_num2(num1_double);
         }
 
         
-
-
     }
-
-    //? method for valid number
-    //? returns true if valid number an false if non valid value
-    //? try block catches any errors that break program
+ //? user defined method for checking if inputed num1 and num2 numbers are valid
+  //? returns true if valid number OR false if not valid number
+  //? try block catches any errors that break program
     public static boolean validNum(String value) {
         //? try block for successful parsing of value 
         //? meaning no error or valid value
@@ -89,48 +72,161 @@ class app {
         }
     }
 
+    static void calculation_options(double num1_double, double num2) {
 
-    // TRUEvalue is true value after confirming if entered numbers are valid numbers 
-    // action is what to do to those two numbers user entered
-    static void whatToDo(boolean TRUEvalue, int action, double val1, double  val2) {
-         
-        if(TRUEvalue == true) {
-            switch (action) {
-                case 1:
-                    // multiplication
-                    double ans = val1 * val2;
-                    System.out.println(val1 + " * " + val2 + " = " + ans);
-                    break;
-                
-                case 2:
-                    // minus
-                    double ans2 = val1 - val2;
-                    System.out.println(val1 + " - " + val2 + " = " + ans2);
-                    break;
+        Scanner scanner = new Scanner(System.in);
+        //calculation option for user to choose for the two entered tow numbers
+        System.out.printf("""
+            
+            Enter what to do to $num1 and $num2 Numbers: 
+            1.*
+            2. -
+            3. /
+            4. +
+            enter option 1 to 4: 
+            """, num1_double, num2);
+        // stores either int 1, 2, 3 or 4 option at a time  
+        String action = scanner.next();
+        boolean if_valid_num = validNum(action);
 
-                case 3:
-                    // division
-                    double ans3 = val1 / val2;
-                    System.out.println(val1 + " / " + val2 + " = " + ans3);
-                    break;
+        // if inputed number on first trial is valid 
+        if (if_valid_num == true) {
+            //converting num1 from STRING to DOUBLE
+            int option_double = Integer.parseInt(action);
+            calculations(option_double, num1_double, num2);
+        } 
 
-                case 4:
-                    // addition
-                    double ans4 = val1 + val2;
-                    System.out.println(val1 + " + " + val2 + " = " + ans4);
-                    break;
-                default:
-                    System.out.println("Please enter values  1, 2, 3 or 4 to choose what to do with values you entered");
-                    
-            }
+        // if inputed number on first trial is not  valid 
+        else {
+            valid_calculations_option(num1_double, num2);
         }
+        
+       
     }
 
-    public static boolean performTask() {
-        // Perform some task here
-        System.out.println("Task is being performed...");
+    //?  user method for re-entering first number until its valid
+    static void valid_num1 () {
+        Scanner scanner = new Scanner(System.in); 
+        System.out.println("Please re-enter the first number by inputing valid number: ");
+        String num1_again = scanner.next();
+
+        boolean num1_again_boolean = validNum(num1_again);
+
+        if (num1_again_boolean == true) {
+            double num1_into_double = Double.parseDouble(num1_again);
+            second_Number_input(num1_into_double);
+            //return num1_into_double;
+        }
+        else {
+            valid_num1();
+        }
+
         
-        // Return whether we want to repeat the task
-        return false; // Change this to `true` to repeat the task
+    }
+    // user method for re-entering secong number until its valid
+    static void valid_num2 (double num1_double) {
+        Scanner scanner = new Scanner(System.in); 
+        System.out.println("Please re-enter the second number by inputing valid number: ");
+        String num2_again = scanner.next();
+
+        boolean num2_again_boolean = validNum(num2_again);
+
+        if (num2_again_boolean == true) {
+            double num2_into_double = Double.parseDouble(num2_again);
+            calculation_options(num1_double, num2_into_double);
+           // return num2_into_double;
+        }
+        else {
+            valid_num2(num1_double);
+        }
+
+        
+    }
+
+    // user method for re-entering option number until its valid
+    static void valid_calculations_option (double num1_double, double num2) {
+        Scanner scanner = new Scanner(System.in); 
+        System.out.println("Please re-enter the option number by inputing valid number (1 - 4): ");
+        String option_again = scanner.next();
+
+        boolean option_again_boolean = validNum(option_again);
+
+         // if valid number
+        if (option_again_boolean == true) {
+            int num2_into_integer = Integer.parseInt(option_again);
+             
+            // option range is  not 1 - 4 
+            if (num2_into_integer > 4 || num2_into_integer < 1) {
+                // recursion
+                valid_calculations_option(num1_double, num2);
+            }
+
+            // option range is 1 - 4 
+            else {
+                calculations(num2_into_integer, num1_double, num2);
+            }
+            
+        }
+        // if not a valid number to re-enter again
+        else {
+            valid_calculations_option(num1_double, num2);
+        }
+
+        
+    }
+
+
+      //? user method for calculating number one with number two
+    static void calculations(int action, double num1_double, double num2) {
+         //?advanced arrow switch case for calculating the two numbers approapriately
+         switch (action) {
+            //case one for multiplying mum1 and num2 when user chooses option 1 having *
+            case 1 -> {
+                double multiplication_answer = num1_double * num2;
+
+                //printing multiplication_answer
+                System.out.print(num1_double + " * " + num2 + " = " + multiplication_answer);
+                break;// to break out of switch case
+            }
+            //case two for minuzing mum1 and num2 when user chooses option 2 having -
+            case 2 -> {
+                double minus_answer = num1_double - num2;
+
+                //printing minus_answer
+                System.out.print(num1_double + " - " + num2 + " = " + minus_answer);
+                break;// to break out of switch case
+            }
+            //case three for dividing mum1 and num2 when user chooses option 3 having /
+            case 3 -> {
+                // if second number is eqaul to zero
+                if (num2 == 0) {
+
+                    System.out.print("second number you entered cannot be zero. \nPlease input a number less than or greater than zero.");
+                }
+                // if second number is not eqaul to zero
+                else {
+                    double division_answer = num1_double / num2;
+
+                    //printing division_answer
+                    System.out.print(num1_double + " / " + num2 + " = " + division_answer);
+                    break;// to break out of switch case
+                }
+                
+            }
+            //case four for adding mum1 and num2 when user chooses option 4 having +
+            case 4 -> {
+                double addition_answer = num1_double + num2;
+
+                //printing addition_answer
+                System.out.print(num1_double + " + " + num2 + " = " + addition_answer);
+                break;// to break out of switch case
+            }
+                
+            
+            default -> {
+                valid_calculations_option(num1_double, num2);
+            }
+                
+        }
     }
 }
